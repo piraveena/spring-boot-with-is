@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring-boot Demo App</title>
+</head>
+<body>
+
+<div th:unless="${#authorization.expression('isAuthenticated()')}">
+    <p>Hello!</p>
+    <p>You will need to log in before viewing Profile page.</p>
+    <div style="float:left">
+        <form method="post" th:action="@{/login}" >
+            <button id="login-button" type="submit" >Login</button>
+        </form>
+    </div>
+</div>
+<div th:if="${#authorization.expression('isAuthenticated()')}" class="text container">
+    <div>
+        You are successfully logged in as
+        <span style="font-weight:bold" th:text="${userName}"></span>
+    </div>
+    <div>
+        <p>Claims found in the ID token<p>
+        <table>
+        <tr th:each="instance : ${IDTokenClaims.getClaims()}">
+            <td style="font-weight:bold" th:text="${instance.key}">key</td>
+            <td th:text="${instance.value}">value</td>
+        </tr>
+        </table>
+    </div>
+    <div style="float:left">
+        <form method="post" th:action="@{/logout}" class="navbar-form navbar-right">
+            <button id="logout-button" type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
